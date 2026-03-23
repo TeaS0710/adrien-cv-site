@@ -64,33 +64,47 @@
 
     <button class="assistant-launcher" id="assistant-launcher" type="button" aria-expanded="false" aria-controls="assistant-panel">
       <span class="assistant-launcher__dot" aria-hidden="true"></span>
-      Ask Airi
+      Ask YIYI
     </button>
 
     <aside class="assistant-panel" id="assistant-panel" aria-hidden="true">
       <div class="assistant-panel__header">
         <div class="assistant-panel__identity">
-          <div class="assistant-avatar" aria-hidden="true">
-            <span class="assistant-avatar__ear assistant-avatar__ear--left"></span>
-            <span class="assistant-avatar__ear assistant-avatar__ear--right"></span>
-            <span class="assistant-avatar__face">^_^</span>
+          <div class="assistant-avatar-frame">
+            <img
+              src="assets/assistant/yiyi-1.png"
+              alt="YIYI assistant avatar"
+              class="assistant-avatar-image"
+              id="assistant-avatar-image"
+            />
           </div>
           <div>
           <p class="assistant-panel__eyebrow">CV Assistant</p>
-          <h2>Airi</h2>
-          <p class="assistant-panel__subtag">meowfficer-inspired site guide</p>
+          <h2>YIYI</h2>
+          <p class="assistant-panel__subtag">Azur Lane-inspired mini guide</p>
           </div>
         </div>
         <button class="assistant-panel__close" id="assistant-close" type="button" aria-label="Close assistant">Close</button>
       </div>
       <p class="assistant-panel__intro">
-        A small soft-spoken guide with a neat meowfficer-inspired vibe. It only answers questions about Adrien's profile, projects, systems and skills.
+        A small soft-spoken guide with a cute naval-game-inspired vibe. It only answers questions about Adrien's profile, projects, systems and skills.
       </p>
       <div class="assistant-panel__meta" id="assistant-meta">10 messages available in this browser session.</div>
       <div class="assistant-messages" id="assistant-messages" aria-live="polite">
         <article class="assistant-message assistant-message--assistant">
-          <p>Hello. I am Airi, your tiny guide for this CV. You can ask about Adrien's machine learning work, systems projects, hardware experience or academic background.</p>
+          <p>Hello. I am YIYI, your tiny guide for this CV. You can ask about Adrien's machine learning work, systems projects, hardware experience or academic background.</p>
         </article>
+      </div>
+      <div class="assistant-gallery" aria-label="YIYI visual set">
+        <button class="assistant-gallery__item is-active" type="button" data-avatar="assets/assistant/yiyi-1.png" aria-label="YIYI look 1">
+          <img src="assets/assistant/yiyi-1.png" alt="" />
+        </button>
+        <button class="assistant-gallery__item" type="button" data-avatar="assets/assistant/yiyi-2.png" aria-label="YIYI look 2">
+          <img src="assets/assistant/yiyi-2.png" alt="" />
+        </button>
+        <button class="assistant-gallery__item" type="button" data-avatar="assets/assistant/yiyi-3.png" aria-label="YIYI look 3">
+          <img src="assets/assistant/yiyi-3.png" alt="" />
+        </button>
       </div>
       <div class="assistant-suggestions" id="assistant-suggestions">
         <button class="assistant-suggestion" type="button">What machine learning experience does Adrien have?</button>

@@ -375,50 +375,63 @@ a:hover {
   gap: 12px;
 }
 
-.assistant-avatar {
+.assistant-avatar-frame {
   position: relative;
-  width: 54px;
-  height: 54px;
-  border-radius: 18px;
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
   display: grid;
   place-items: center;
   background: linear-gradient(180deg, rgba(255, 202, 230, 0.92), rgba(255, 237, 245, 0.95));
   border: 1px solid rgba(255, 163, 207, 0.38);
   box-shadow: 0 12px 24px rgba(255, 144, 196, 0.18);
-  color: #824969;
-  font-size: 0.88rem;
-  font-weight: 800;
+  overflow: hidden;
 }
 
-body[data-theme="soft-night"] .assistant-avatar {
+body[data-theme="soft-night"] .assistant-avatar-frame {
   background: linear-gradient(180deg, rgba(255, 173, 215, 0.18), rgba(255, 219, 239, 0.08));
   border-color: rgba(255, 173, 215, 0.22);
-  color: #ffd6eb;
 }
 
-.assistant-avatar__ear {
-  position: absolute;
-  top: -6px;
-  width: 16px;
-  height: 16px;
-  background: inherit;
-  border: inherit;
-  border-radius: 5px 12px 4px 12px;
+.assistant-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
-.assistant-avatar__ear--left {
-  left: 8px;
-  transform: rotate(-28deg);
+.assistant-gallery {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
-.assistant-avatar__ear--right {
-  right: 8px;
-  transform: rotate(28deg) scaleX(-1);
+.assistant-gallery__item {
+  width: 52px;
+  height: 52px;
+  border: 1px solid var(--line);
+  background: var(--surface-strong);
+  border-radius: 16px;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 }
 
-.assistant-avatar__face {
-  position: relative;
-  z-index: 1;
+.assistant-gallery__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.assistant-gallery__item:hover {
+  transform: translateY(-2px);
+}
+
+.assistant-gallery__item.is-active {
+  border-color: var(--accent);
+  box-shadow: var(--glow);
 }
 
 .assistant-panel__eyebrow {

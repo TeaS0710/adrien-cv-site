@@ -13,6 +13,8 @@ const assistantMessages = document.querySelector("#assistant-messages");
 const assistantMeta = document.querySelector("#assistant-meta");
 const assistantSend = document.querySelector("#assistant-send");
 const assistantSuggestions = document.querySelectorAll(".assistant-suggestion");
+const assistantAvatarImage = document.querySelector("#assistant-avatar-image");
+const assistantGalleryItems = document.querySelectorAll(".assistant-gallery__item");
 const chips = document.querySelectorAll(".chip");
 const cards = document.querySelectorAll(".project-card");
 const navLinks = document.querySelectorAll(".section-nav a");
@@ -347,6 +349,17 @@ assistantSuggestions.forEach((button) => {
     if (!assistantInput) return;
     assistantInput.value = button.textContent?.trim() || "";
     setAssistantOpen(true);
+  });
+});
+
+assistantGalleryItems.forEach((button) => {
+  button.addEventListener("click", () => {
+    const nextAvatar = button.dataset.avatar;
+    if (!nextAvatar || !assistantAvatarImage) return;
+
+    assistantGalleryItems.forEach((item) => item.classList.remove("is-active"));
+    button.classList.add("is-active");
+    assistantAvatarImage.src = nextAvatar;
   });
 });
 
