@@ -69,20 +69,33 @@
 
     <aside class="assistant-panel" id="assistant-panel" aria-hidden="true">
       <div class="assistant-panel__header">
-        <div>
+        <div class="assistant-panel__identity">
+          <div class="assistant-avatar" aria-hidden="true">
+            <span class="assistant-avatar__ear assistant-avatar__ear--left"></span>
+            <span class="assistant-avatar__ear assistant-avatar__ear--right"></span>
+            <span class="assistant-avatar__face">^_^</span>
+          </div>
+          <div>
           <p class="assistant-panel__eyebrow">CV Assistant</p>
           <h2>Airi</h2>
+          <p class="assistant-panel__subtag">meowfficer-inspired site guide</p>
+          </div>
         </div>
         <button class="assistant-panel__close" id="assistant-close" type="button" aria-label="Close assistant">Close</button>
       </div>
       <p class="assistant-panel__intro">
-        A small site assistant with a soft personality. It only answers questions about Adrien's profile, projects and skills.
+        A small soft-spoken guide with a neat meowfficer-inspired vibe. It only answers questions about Adrien's profile, projects, systems and skills.
       </p>
       <div class="assistant-panel__meta" id="assistant-meta">10 messages available in this browser session.</div>
       <div class="assistant-messages" id="assistant-messages" aria-live="polite">
         <article class="assistant-message assistant-message--assistant">
-          <p>Hello. I am Airi, a small guide for this CV. You can ask about Adrien's skills, projects, ML background or hardware experience.</p>
+          <p>Hello. I am Airi, your tiny guide for this CV. You can ask about Adrien's machine learning work, systems projects, hardware experience or academic background.</p>
         </article>
+      </div>
+      <div class="assistant-suggestions" id="assistant-suggestions">
+        <button class="assistant-suggestion" type="button">What machine learning experience does Adrien have?</button>
+        <button class="assistant-suggestion" type="button">What hardware projects has he worked on?</button>
+        <button class="assistant-suggestion" type="button">What makes his profile different?</button>
       </div>
       <form class="assistant-form" id="assistant-form">
         <label class="sr-only" for="assistant-input">Ask Airi a question</label>

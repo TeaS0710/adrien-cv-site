@@ -369,6 +369,58 @@ a:hover {
   align-items: flex-start;
 }
 
+.assistant-panel__identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.assistant-avatar {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, rgba(255, 202, 230, 0.92), rgba(255, 237, 245, 0.95));
+  border: 1px solid rgba(255, 163, 207, 0.38);
+  box-shadow: 0 12px 24px rgba(255, 144, 196, 0.18);
+  color: #824969;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+body[data-theme="soft-night"] .assistant-avatar {
+  background: linear-gradient(180deg, rgba(255, 173, 215, 0.18), rgba(255, 219, 239, 0.08));
+  border-color: rgba(255, 173, 215, 0.22);
+  color: #ffd6eb;
+}
+
+.assistant-avatar__ear {
+  position: absolute;
+  top: -6px;
+  width: 16px;
+  height: 16px;
+  background: inherit;
+  border: inherit;
+  border-radius: 5px 12px 4px 12px;
+}
+
+.assistant-avatar__ear--left {
+  left: 8px;
+  transform: rotate(-28deg);
+}
+
+.assistant-avatar__ear--right {
+  right: 8px;
+  transform: rotate(28deg) scaleX(-1);
+}
+
+.assistant-avatar__face {
+  position: relative;
+  z-index: 1;
+}
+
 .assistant-panel__eyebrow {
   margin: 0 0 4px;
   color: var(--muted);
@@ -381,6 +433,12 @@ a:hover {
   margin: 0;
   color: var(--accent);
   font-size: 1.25rem;
+}
+
+.assistant-panel__subtag {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
 }
 
 .assistant-panel__close {
@@ -415,6 +473,31 @@ a:hover {
   overflow-y: auto;
   padding-right: 4px;
   margin-bottom: 12px;
+}
+
+.assistant-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.assistant-suggestion {
+  border: 1px solid var(--line);
+  background: var(--surface-strong);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 8px 11px;
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.assistant-suggestion:hover {
+  transform: translateY(-1px);
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .assistant-message {

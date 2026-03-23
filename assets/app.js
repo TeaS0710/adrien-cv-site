@@ -12,6 +12,7 @@ const assistantInput = document.querySelector("#assistant-input");
 const assistantMessages = document.querySelector("#assistant-messages");
 const assistantMeta = document.querySelector("#assistant-meta");
 const assistantSend = document.querySelector("#assistant-send");
+const assistantSuggestions = document.querySelectorAll(".assistant-suggestion");
 const chips = document.querySelectorAll(".chip");
 const cards = document.querySelectorAll(".project-card");
 const navLinks = document.querySelectorAll(".section-nav a");
@@ -340,6 +341,14 @@ if (assistantForm) {
     }
   });
 }
+
+assistantSuggestions.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (!assistantInput) return;
+    assistantInput.value = button.textContent?.trim() || "";
+    setAssistantOpen(true);
+  });
+});
 
 updateAssistantMeta();
 setAssistantBusy(false);
