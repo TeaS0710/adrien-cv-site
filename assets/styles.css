@@ -358,6 +358,8 @@ a:hover {
   --assistant-soft: rgba(255, 125, 184, 0.12);
   --assistant-edge: rgba(255, 125, 184, 0.24);
   position: fixed;
+  display: flex;
+  flex-direction: column;
   left: 18px;
   right: 18px;
   bottom: 78px;
@@ -400,12 +402,18 @@ a:hover {
   justify-content: space-between;
   gap: 16px;
   align-items: flex-start;
+  flex-shrink: 0;
 }
 
 .assistant-panel__identity {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
+}
+
+.assistant-panel__identity > div:last-child {
+  min-width: 0;
 }
 
 .assistant-avatar-frame {
@@ -429,8 +437,9 @@ body[data-theme="soft-night"] .assistant-avatar-frame {
 .assistant-avatar-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: contain;
+  object-position: center center;
+  padding: 4px;
 }
 
 .assistant-gallery {
@@ -438,10 +447,17 @@ body[data-theme="soft-night"] .assistant-avatar-frame {
   gap: 8px;
   margin-bottom: 12px;
   overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+
+.assistant-gallery::-webkit-scrollbar {
+  display: none;
 }
 
 .assistant-gallery__item {
   display: grid;
+  flex: 0 0 auto;
   width: 52px;
   height: 72px;
   border: 1px solid var(--line);
@@ -456,8 +472,10 @@ body[data-theme="soft-night"] .assistant-avatar-frame {
 .assistant-gallery__item img {
   width: 100%;
   height: 52px;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: contain;
+  object-position: center center;
+  padding: 3px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--assistant-soft) 65%, white), transparent);
 }
 
 .assistant-gallery__label {
@@ -500,6 +518,7 @@ body[data-theme="soft-night"] .assistant-avatar-frame {
   margin: 4px 0 0;
   color: var(--muted);
   font-size: 0.82rem;
+  line-height: 1.35;
 }
 
 .assistant-panel__close {
@@ -520,11 +539,13 @@ body[data-theme="soft-night"] .assistant-avatar-frame {
 
 .assistant-panel__intro {
   margin: 10px 0 8px;
+  flex-shrink: 0;
 }
 
 .assistant-panel__meta {
   margin-bottom: 12px;
   font-size: 0.86rem;
+  flex-shrink: 0;
 }
 
 .assistant-persona-strip {
@@ -535,6 +556,7 @@ body[data-theme="soft-night"] .assistant-avatar-frame {
   border-radius: 16px;
   border: 1px solid var(--assistant-edge);
   background: linear-gradient(180deg, var(--assistant-soft), transparent);
+  flex-shrink: 0;
 }
 
 .assistant-persona-strip__label {
@@ -553,11 +575,13 @@ body[data-theme="soft-night"] .assistant-avatar-frame {
 
 .assistant-messages {
   display: grid;
+  flex: 1 1 auto;
   gap: 10px;
-  max-height: 280px;
+  min-height: 120px;
   overflow-y: auto;
   padding-right: 4px;
   margin-bottom: 12px;
+  overscroll-behavior: contain;
 }
 
 .assistant-suggestions {
@@ -565,6 +589,14 @@ body[data-theme="soft-night"] .assistant-avatar-frame {
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 12px;
+  flex-shrink: 0;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+
+.assistant-suggestions::-webkit-scrollbar {
+  display: none;
 }
 
 .assistant-suggestion {
@@ -575,6 +607,7 @@ body[data-theme="soft-night"] .assistant-avatar-frame {
   padding: 8px 11px;
   font: inherit;
   font-size: 0.82rem;
+  line-height: 1.3;
   cursor: pointer;
   transition: transform 160ms ease, background 160ms ease, color 160ms ease;
 }
@@ -624,9 +657,10 @@ body[data-theme="soft-night"] .assistant-avatar-frame {
 
 .assistant-form textarea {
   width: 100%;
-  resize: vertical;
+  resize: none;
   min-height: 84px;
-  max-height: 30vh;
+  height: 84px;
+  max-height: 160px;
   padding: 12px 14px;
   border-radius: 18px;
   border: 1px solid var(--line);
@@ -634,6 +668,13 @@ body[data-theme="soft-night"] .assistant-avatar-frame {
   color: var(--text);
   font: inherit;
   line-height: 1.5;
+}
+
+.assistant-form {
+  flex-shrink: 0;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--assistant-edge) 70%, transparent);
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--panel) 96%, white));
 }
 
 .assistant-form textarea:focus {
@@ -986,6 +1027,15 @@ body.nav-condensed .section-nav {
     font-size: 0.8rem;
   }
 
+  .assistant-panel__intro {
+    margin: 8px 0 6px;
+  }
+
+  .assistant-persona-strip {
+    margin-bottom: 10px;
+    padding: 9px 10px;
+  }
+
   .assistant-avatar-frame {
     width: 56px;
     height: 56px;
@@ -996,8 +1046,17 @@ body.nav-condensed .section-nav {
     min-width: 56px;
   }
 
+  .assistant-suggestions {
+    flex-wrap: nowrap;
+  }
+
+  .assistant-suggestion {
+    flex: 0 0 auto;
+    max-width: 78vw;
+  }
+
   .assistant-messages {
-    max-height: 32vh;
+    min-height: 96px;
   }
 
   .assistant-form textarea {

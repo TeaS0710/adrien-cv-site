@@ -18,7 +18,7 @@ const assistantIntro = document.querySelector("#assistant-intro");
 const assistantPersonaMood = document.querySelector("#assistant-persona-mood");
 const assistantPersonaTask = document.querySelector("#assistant-persona-task");
 const assistantSend = document.querySelector("#assistant-send");
-const assistantSuggestions = document.querySelectorAll(".assistant-suggestion");
+const assistantSuggestions = document.querySelector("#assistant-suggestions");
 const assistantAvatarImage = document.querySelector("#assistant-avatar-image");
 const assistantGalleryItems = document.querySelectorAll(".assistant-gallery__item");
 const chips = document.querySelectorAll(".chip");
@@ -352,26 +352,31 @@ const updateAssistantMeta = (detail) => {
     detail || `${remaining} message${remaining === 1 ? "" : "s"} available in this browser session.`;
 };
 
-const renderAssistantSuggestions = (persona) => {
-  if (!assistantSuggestions.length && !document.querySelector("#assistant-suggestions")) return;
-  const suggestionsContainer = document.querySelector("#assistant-suggestions");
-  if (!suggestionsContainer) return;
+const syncAssistantTextarea = () => {
+  if (!assistantInput) return;
+  assistantInput.style.height = "auto";
+  assistantInput.style.height = `${Math.min(assistantInput.scrollHeight, 160)}px`;
+};
 
-  suggestionsContainer.innerHTML = "";
+const renderAssistantSuggestions = (persona) => {
+  if (!assistantSuggestions) return;
+  assistantSuggestions.innerHTML = "";
 
   persona.suggestions.forEach((text) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "assistant-suggestion is-active";
+    button.className = "assistant-suggestion";
     button.dataset.persona = persona.id;
     button.textContent = `${persona.name}: ${text}`;
     button.addEventListener("click", () => {
       if (!assistantInput) return;
       applyAssistantPersona(persona.id);
       assistantInput.value = text;
+      syncAssistantTextarea();
       setAssistantOpen(true);
+      assistantInput.focus();
     });
-    suggestionsContainer.appendChild(button);
+    assistantSuggestions.appendChild(button);
   });
 };
 
@@ -422,11 +427,6 @@ const applyAssistantPersona = (personaId, options = {}) => {
   assistantGalleryItems.forEach((item) => {
     const isActive = item.dataset.persona === persona.id;
     item.classList.toggle("is-active", isActive);
-  });
-
-  assistantSuggestions.forEach((button) => {
-    const isActive = button.dataset.persona === persona.id;
-    button.classList.toggle("is-active", isActive);
   });
 
   renderAssistantSuggestions(persona);
@@ -507,6 +507,7 @@ if (assistantForm) {
     applyAssistantPersona(persona.id);
     appendAssistantMessage("user", message);
     assistantInput.value = "";
+    syncAssistantTextarea();
     setAssistantBusy(true);
     appendAssistantMessage("status", `${persona.name} is thinking...`);
 
@@ -563,16 +564,18 @@ assistantGalleryItems.forEach((button) => {
 
     assistantAvatarImage.src = nextAvatar;
     applyAssistantPersona(personaId, { preserveAvatar: true });
+    if (assistantInput) {
+      assistantInput.focus();
+    }
   });
 });
 
 if (assistantInput) {
-  assistantInput.addEventListener("input", () => {
-    applyAssistantPersona(detectPersonaFromText(assistantInput.value).id);
-  });
+  assistantInput.addEventListener("input", syncAssistantTextarea);
 }
 
 applyAssistantPersona("profile");
+syncAssistantTextarea();
 updateAssistantMeta();
 setAssistantBusy(false);
 syncScrollProgress();
