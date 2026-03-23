@@ -80,19 +80,19 @@
           </div>
           <div>
           <p class="assistant-panel__eyebrow">CV Assistant</p>
-          <h2>YIYI</h2>
-          <p class="assistant-panel__subtag">Azur Lane-inspired mini guide</p>
+          <h2>YIYI Switchboard</h2>
+          <p class="assistant-panel__subtag">Mira, Kael and Sora on one channel</p>
           </div>
         </div>
         <button class="assistant-panel__close" id="assistant-close" type="button" aria-label="Close assistant">Close</button>
       </div>
       <p class="assistant-panel__intro">
-        A soft-spoken guide with three moods: profile overview, project breakdown and a more human portrait of Adrien's interests and working style.
+        YIYI now routes between three distinct assistant identities depending on the question: one for Adrien's overall profile, one for his technical work, and one for his more human side.
       </p>
       <div class="assistant-panel__meta" id="assistant-meta">10 messages available in this browser session.</div>
       <div class="assistant-messages" id="assistant-messages" aria-live="polite">
         <article class="assistant-message assistant-message--assistant">
-          <p>Hello. I am YIYI. I can introduce Adrien globally, explain his projects and technical work, or sketch a more personal portrait based on the information available on this site.</p>
+          <p>Hello. I am YIYI Switchboard. Mira handles Adrien's global profile, Kael focuses on projects and engineering work, and Sora sketches a more human portrait based on the information visible on this site.</p>
         </article>
       </div>
       <div class="assistant-gallery" aria-label="YIYI visual set">
@@ -106,10 +106,13 @@
           <img src="assets/assistant/yiyi-3.png" alt="" />
         </button>
       </div>
+      <div class="assistant-panel__meta">
+        Mira: poised profile guide. Kael: technical analyst. Sora: human-side interpreter.
+      </div>
       <div class="assistant-suggestions" id="assistant-suggestions">
-        <button class="assistant-suggestion" type="button">Who is Adrien and what makes his profile stand out?</button>
-        <button class="assistant-suggestion" type="button">Which projects best show Adrien's technical work?</button>
-        <button class="assistant-suggestion" type="button">What kind of person does Adrien seem to be outside pure coursework?</button>
+        <button class="assistant-suggestion" type="button">Mira: Who is Adrien and what makes his profile stand out?</button>
+        <button class="assistant-suggestion" type="button">Kael: Which projects best show Adrien's technical work?</button>
+        <button class="assistant-suggestion" type="button">Sora: What kind of person does Adrien seem to be outside pure coursework?</button>
       </div>
       <form class="assistant-form" id="assistant-form">
         <label class="sr-only" for="assistant-input">Ask Airi a question</label>
@@ -118,7 +121,7 @@
           name="message"
           rows="3"
           maxlength="500"
-          placeholder="Ask about his profile, projects, working style or personal technical interests..."
+          placeholder="Ask Mira for overview, Kael for projects, or Sora for Adrien's working style..."
           required
         ></textarea>
         <div class="assistant-form__footer">
