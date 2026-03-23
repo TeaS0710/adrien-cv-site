@@ -1,4 +1,4 @@
-import { CV_CONTEXT, SYSTEM_PROMPT } from "./cv-context.js";
+import { contextForPersona, selectPersona } from "./cv-context.js";
 
 const DEFAULT_MODEL = "qwen3:4b";
 const MAX_MESSAGE_LENGTH = 500;
@@ -100,6 +100,8 @@ async function handleChat(request, env) {
 async function queryOllamaCloud(message, env) {
   const baseUrl = (env.OLLAMA_BASE_URL || "https://ollama.com").replace(/\/$/, "");
   const model = env.OLLAMA_MODEL || DEFAULT_MODEL;
+  const persona = selectPersona(message);
+  const personaContext = contextForPersona(persona.id);
 
   const response = await fetch(`${baseUrl}/api/chat`, {
     method: "POST",
@@ -110,9 +112,12 @@ async function queryOllamaCloud(message, env) {
     body: JSON.stringify({
       model,
       stream: false,
+      options: {
+        temperature: 0.1,
+      },
       messages: [
-        { role: "system", content: SYSTEM_PROMPT.trim() },
-        { role: "system", content: CV_CONTEXT.trim() },
+        { role: "system", content: persona.prompt.trim() },
+        { role: "system", content: personaContext },
         { role: "user", content: message },
       ],
     }),
