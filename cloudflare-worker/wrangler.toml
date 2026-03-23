@@ -1,0 +1,11 @@
+name = "adrien-cv-assistant"
+main = "src/index.js"
+compatibility_date = "2026-03-23"
+
+[observability.logs]
+enabled = true
+
+[vars]
+ALLOWED_ORIGIN = "https://your-github-username.github.io"
+OLLAMA_BASE_URL = "https://ollama.com"
+OLLAMA_MODEL = "qwen3:4b"
