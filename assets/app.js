@@ -269,19 +269,25 @@ const attachCardMotion = (card) => {
     card.style.transform = "";
   };
 
-  card.addEventListener("pointermove", (event) => {
+  // Support pour les événements tactiles et pointer
+  const moveEvent = window.PointerEvent ? "pointermove" : "mousemove touchmove";
+  const leaveEvent = window.PointerEvent ? "pointerleave" : "mouseleave touchend";
+
+  card.addEventListener(moveEvent, (event) => {
     if (window.innerWidth < 920) return;
 
     const bounds = card.getBoundingClientRect();
-    const offsetX = event.clientX - bounds.left;
-    const offsetY = event.clientY - bounds.top;
+    const clientX = event.clientX || (event.touches && event.touches[0].clientX) || 0;
+    const clientY = event.clientY || (event.touches && event.touches[0].clientY) || 0;
+    const offsetX = clientX - bounds.left;
+    const offsetY = clientY - bounds.top;
     const rotateY = ((offsetX / bounds.width) - 0.5) * 7;
     const rotateX = (0.5 - (offsetY / bounds.height)) * 7;
 
     card.style.transform = `translateY(-4px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
   });
 
-  card.addEventListener("pointerleave", reset);
+  card.addEventListener(leaveEvent, reset);
   card.addEventListener("blur", reset);
 };
 
@@ -296,12 +302,14 @@ const resetHeroMotion = () => {
 };
 
 if (heroSurface) {
-  heroSurface.addEventListener("pointermove", (event) => {
+  const handleHeroMove = (event) => {
     if (window.innerWidth < 920) return;
 
     const bounds = heroSurface.getBoundingClientRect();
-    const offsetX = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const offsetY = (event.clientY - bounds.top) / bounds.height - 0.5;
+    const clientX = event.clientX || (event.touches && event.touches[0].clientX) || 0;
+    const clientY = event.clientY || (event.touches && event.touches[0].clientY) || 0;
+    const offsetX = (clientX - bounds.left) / bounds.width - 0.5;
+    const offsetY = (clientY - bounds.top) / bounds.height - 0.5;
     const rotateY = offsetX * 6;
     const rotateX = offsetY * -5;
 
@@ -311,9 +319,14 @@ if (heroSurface) {
       const factor = index === 0 ? 18 : 12;
       orb.style.transform = `translate(${offsetX * factor}px, ${offsetY * factor}px)`;
     });
-  });
+  };
+
+  // Support pour les événements tactiles et pointer
+  heroSurface.addEventListener("pointermove", handleHeroMove);
+  heroSurface.addEventListener("touchmove", handleHeroMove, { passive: true });
 
   heroSurface.addEventListener("pointerleave", resetHeroMotion);
+  heroSurface.addEventListener("touchend", resetHeroMotion);
 }
 
 const updateDockEffect = (event) => {
@@ -368,6 +381,8 @@ const renderAssistantSuggestions = (persona) => {
     button.className = "assistant-suggestion";
     button.dataset.persona = persona.id;
     button.textContent = `${persona.name}: ${text}`;
+
+    // Gestionnaire de clic pour les suggestions
     button.addEventListener("click", () => {
       if (!assistantInput) return;
       applyAssistantPersona(persona.id);
@@ -376,6 +391,16 @@ const renderAssistantSuggestions = (persona) => {
       setAssistantOpen(true);
       assistantInput.focus();
     });
+
+    // Support tactile pour feedback visuel
+    button.addEventListener("touchstart", () => {
+      button.classList.add("touch-active");
+    });
+
+    button.addEventListener("touchend", () => {
+      button.classList.remove("touch-active");
+    });
+
     assistantSuggestions.appendChild(button);
   });
 };
@@ -440,7 +465,56 @@ const setAssistantOpen = (open) => {
   assistantLauncher.setAttribute("aria-expanded", String(open));
 
   if (open && assistantInput) {
+    // Focus sur le champ d'entrée quand le panneau s'ouvre
     assistantInput.focus();
+
+    // Gestion de la navigation au clavier pour fermer le panneau
+    const closePanelOnEscape = (event) => {
+      if (event.key === "Escape") {
+        setAssistantOpen(false);
+        assistantLauncher.focus(); // Retourner au bouton de lancement
+        document.removeEventListener("keydown", closePanelOnEscape);
+      }
+    };
+
+    document.addEventListener("keydown", closePanelOnEscape);
+  }
+
+  // Gestion du focus trap pour l'accessibilité
+  if (open) {
+    // Stocker l'élément ayant le focus avant l'ouverture
+    const lastFocusedElement = document.activeElement;
+
+    // Créer une fonction pour gérer le focus trap
+    const handleFocusTrap = (event) => {
+      if (event.key === "Tab") {
+        const focusableElements = assistantPanel.querySelectorAll(
+          'button, textarea, [href], input, select, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey && document.activeElement === firstElement) {
+          lastElement.focus();
+          event.preventDefault();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+          firstElement.focus();
+          event.preventDefault();
+        }
+      }
+    };
+
+    // Ajouter l'écouteur d'événements pour le focus trap
+    assistantPanel.addEventListener("keydown", handleFocusTrap);
+
+    // Stocker la fonction pour pouvoir la retirer plus tard
+    assistantPanel.handleFocusTrap = handleFocusTrap;
+  } else {
+    // Retirer l'écouteur d'événements du focus trap
+    if (assistantPanel.handleFocusTrap) {
+      assistantPanel.removeEventListener("keydown", assistantPanel.handleFocusTrap);
+      delete assistantPanel.handleFocusTrap;
+    }
   }
 };
 
@@ -482,7 +556,10 @@ if (assistantClose) {
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
-    setAssistantOpen(false);
+    // Fermer l'assistant seulement s'il est ouvert
+    if (assistantPanel && assistantPanel.classList.contains("is-open")) {
+      setAssistantOpen(false);
+    }
   }
 });
 
@@ -557,6 +634,7 @@ if (assistantForm) {
 }
 
 assistantGalleryItems.forEach((button) => {
+  // Support pour les événements tactiles
   button.addEventListener("click", () => {
     const nextAvatar = button.dataset.avatar;
     const personaId = button.dataset.persona || "profile";
@@ -568,10 +646,29 @@ assistantGalleryItems.forEach((button) => {
       assistantInput.focus();
     }
   });
+
+  // Ajout de support tactile pour feedback visuel
+  button.addEventListener("touchstart", () => {
+    button.classList.add("touch-active");
+  });
+
+  button.addEventListener("touchend", () => {
+    button.classList.remove("touch-active");
+  });
 });
 
 if (assistantInput) {
   assistantInput.addEventListener("input", syncAssistantTextarea);
+
+  // Ajouter la fonctionnalité d'envoi avec la touche Entrée
+  assistantInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      if (assistantForm) {
+        assistantForm.dispatchEvent(new Event('submit'));
+      }
+    }
+  });
 }
 
 applyAssistantPersona("profile");
